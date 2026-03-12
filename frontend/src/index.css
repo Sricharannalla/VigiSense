@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary-50: #e3f2fd;
+  --color-primary-100: #bbdefb;
+  --color-primary-500: #1E88E5;
+  --color-primary-600: #1976D2;
+  --color-primary-700: #1565C0;
+  
+  --color-secondary-50: #e3f2fd;
+  --color-secondary-500: #42A5F5;
+  --color-secondary-600: #2196f3;
+
+  --color-accent-50: #e0f2f1;
+  --color-accent-500: #26A69A;
+  --color-accent-600: #00897b;
+
+  --color-bg-light: #F4F8FB;
+
+  --font-sans: "Inter", "Outfit", system-ui, sans-serif;
+}
+
+body {
+  @apply bg-bg-light text-slate-900;
+}
+
+.card {
+  @apply bg-white rounded-2xl shadow-sm border border-slate-100/50 p-8 transition-all hover:shadow-md hover:border-primary-100;
+}
+
+.btn-primary {
+  @apply px-6 py-3 bg-primary-500 hover:bg-primary-600 text-white rounded-xl font-semibold transition-all shadow-sm hover:shadow-primary-500/25 active:scale-[0.98];
+}
+
+.btn-secondary {
+  @apply px-6 py-3 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 rounded-xl font-semibold transition-all active:scale-[0.98];
+}
+
+.btn-accent {
+  @apply px-6 py-3 bg-accent-500 hover:bg-accent-600 text-white rounded-xl font-semibold transition-all shadow-sm hover:shadow-accent-500/25 active:scale-[0.98];
+}
+
+.input-field {
+  @apply w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 outline-none transition-all;
+}
+
+/* Base custom animations */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out forwards;
+}
