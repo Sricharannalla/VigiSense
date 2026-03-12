@@ -1,6 +1,6 @@
 import express from 'express';
 import Report from '../models/Report.js';
-import { analyzeADR } from '../services/aiService.js';
+import { analyzeADR, classifySeverity } from '../services/aiService.js';
 
 const router = express.Router();
 
@@ -11,12 +11,19 @@ router.post('/', async (req, res) => {
   try {
     const reportData = req.body;
     
-    // AI Missing Info Detection and Risk Scoring
-    const { riskScore, questions, status } = await analyzeADR(reportData);
+    // 1. AI Severity Classification FIRST (needed for risk scoring)
+    const { severity, explanation } = await classifySeverity(reportData);
+    
+    // 2. AI Missing Info Detection, Risk Scoring, and Level calculation
+    const reportWithSeverity = { ...reportData, aiSeverity: severity };
+    const { riskScore, riskLevel, questions, status } = await analyzeADR(reportWithSeverity);
     
     const newReport = new Report({
       ...reportData,
       riskScore,
+      riskLevel,
+      aiSeverity: severity,
+      aiSeverityExplanation: explanation,
       aiFollowUpQuestions: questions,
       status
     });

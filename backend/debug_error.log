@@ -1,0 +1,10 @@
+Error Name: SyntaxError
+Error Message: The requested module '@google/generative-ai' does not provide an export named 'GoogleGenAI'
+Stack: file:///C:/Users/Sri%20Charan/OneDrive/Desktop/unnati6/backend/services/aiService.js:1
+import { GoogleGenAI } from '@google/generative-ai';
+         ^^^^^^^^^^^
+SyntaxError: The requested module '@google/generative-ai' does not provide an export named 'GoogleGenAI'
+    at ModuleJob._instantiate (node:internal/modules/esm/module_job:228:21)
+    at async ModuleJob.run (node:internal/modules/esm/module_job:337:5)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:651:26)
+    at async file:///C:/Users/Sri%20Charan/OneDrive/Desktop/unnati6/backend/debug_import.js:3:13

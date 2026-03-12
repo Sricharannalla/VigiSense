@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement, PointElement, LineElement } from 'chart.js';
 import { Bar, Pie, Doughnut } from 'react-chartjs-2';
@@ -41,7 +42,7 @@ export default function AnalystDashboard() {
     return matchDrug && matchSeverity && matchDate;
   });
 
-  const highRiskReports = reports.filter(r => r.riskScore >= 80);
+  const highRiskReports = reports.filter(r => r.riskLevel === 'High Risk');
 
   // Chart Data: Risk Score Distribution
   const riskGroups = { 'Low (0-20)': 0, 'Medium (21-50)': 0, 'High (51-79)': 0, 'Critical (80+)': 0 };
@@ -234,18 +235,23 @@ export default function AnalystDashboard() {
                       </td>
                       <td className="p-4">
                         <span className={`px-2.5 py-1 rounded-full text-xs font-semibold whitespace-nowrap ${
-                          report.seriousnessLevel === 'Fatal' ? 'bg-red-100 text-red-800' :
-                          report.seriousnessLevel === 'Severe' ? 'bg-orange-100 text-orange-800' :
-                          report.seriousnessLevel === 'Moderate' ? 'bg-blue-100 text-blue-800' :
-                          'bg-green-100 text-green-800'
+                          (report.aiSeverity || report.seriousnessLevel) === 'Fatal' ? 'bg-red-100 text-red-800 border border-red-200' :
+                          (report.aiSeverity || report.seriousnessLevel) === 'Severe' ? 'bg-orange-100 text-orange-800 border border-orange-200' :
+                          (report.aiSeverity || report.seriousnessLevel) === 'Moderate' ? 'bg-blue-100 text-blue-800 border border-blue-200' :
+                          'bg-green-100 text-green-800 border border-green-200'
                         }`}>
-                          {report.seriousnessLevel}
+                          {report.aiSeverity || report.seriousnessLevel}
                         </span>
                       </td>
                       <td className="p-4">
-                        <span className={`font-bold ${report.riskScore >= 80 ? 'text-red-600' : report.riskScore >= 50 ? 'text-orange-500' : 'text-slate-700'}`}>
-                          {report.riskScore}
-                        </span>
+                        <div className="flex flex-col">
+                          <span className={`font-bold ${report.riskLevel === 'High Risk' ? 'text-red-600' : report.riskLevel === 'Medium Risk' ? 'text-orange-500' : 'text-green-600'}`}>
+                            {report.riskScore}
+                          </span>
+                          <span className="text-[10px] font-bold uppercase tracking-tighter text-slate-400">
+                            {report.riskLevel}
+                          </span>
+                        </div>
                       </td>
                       <td className="p-4">
                         {report.status === 'Pending Follow-Up' ? (
